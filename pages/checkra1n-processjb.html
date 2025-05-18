@@ -1,0 +1,206 @@
+<html><head><template>
+  <div class="page">
+
+    <div class="page-content" style="background:black !important; position: relative;">
+
+
+      <img src="img/chekrain-icon.png" style="width: 40px;padding: 10px;margin-bottom: -40px;margin-top: 5%;">
+      <h1 style="color: white;padding: 18px;padding: 15px;margin-bottom: -25px;">Loader</h1>
+
+      <div id="maincydialoadContainer">
+        <div class="block-title" style="color: white;">Install</div>
+        <div class="block block-strong text-align-center" style="background: rgb(41, 40, 40); color:white;padding: 0;">
+          
+          <div id="loading" class="list media-list" style="padding: 20px;margin: 0;">
+            <p class="preloader color-white" style="margin-right:2px;"></p><span>Loading</span>
+          </div>
+  
+          <div id="loading1" class="list media-list" style="margin: 0;">
+            <ul>
+              <li>
+                <a href="#" class="item-link item-content popupGet" style="background: rgb(41, 40, 40); color:white;">
+                  <div class="item-media"><img src="img/cydia-chekrain.png" width="35"></div>
+                  <div class="item-inner">
+                    <div class="item-title-row" style="margin-top: 2%; color: white; ">
+                      <div class="item-title">Cydia 2</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+  
+        <p style="color: white; padding: 20px;margin-top:-50px;">checkra1n Loader 1.0.1 (1)</p>
+      </div>
+
+      <div id="jailbreakcheckrainProcess" style="margin-top:45%;">
+        <div class="block block-strong text-align-center" style="background:black; color:white;padding:0;">
+          <p class="preloader color-white" style="margin-right:2px;"></p><br>
+          <p id="jbcheckrainProcessText">Downloading Base System</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+
+
+<script>
+  return {
+    on: {
+      pageBeforeRemove: function () {
+      },
+      pageInit: function (page) {
+
+        document.getElementById("loading").style.display="block";
+        document.getElementById("loading1").style.display="none";
+
+        document.getElementById("jailbreakcheckrainProcess").style.display="none";
+
+        showCydia();
+
+        $('.jailbroken').hide();
+        $('.afterJb').hide();
+        $('.beforeJb').show();
+        $('.processimg1').hide();
+        $('.processimg').show();
+
+   
+
+        // Start jailbreak process
+        $('.jailbreakbtn').on('click', function () {
+
+          $('.processimg').hide();
+          $('.processimg1').show();
+
+          setTimeout(
+            function () {
+              $('.jailbreak').hide();
+               $('.jailbroken').show();
+               $('.afterJb').show();
+               $('.beforeJb').hide();
+        
+            }, 15000);
+
+        });
+
+
+
+
+      $('.popupGet').on('click', function () {
+
+        actions.open();
+
+      });
+
+
+     
+      //- Two groups
+      var actions = app.actions.create({
+        buttons: [
+          // First group
+          [
+            {
+              text: 'Install Cydia 2',
+              onClick: function () {
+                installCydia();
+              }
+
+            },
+      
+          ],
+          // Second group
+          [
+            {
+              text: 'Cancel',
+            }
+          ]
+        ]
+      });
+        
+
+      // ---------------
+
+
+     
+
+
+      }
+
+
+    }
+  }
+
+  function showCydia(){
+    setTimeout(function(){ 
+      document.getElementById("loading").style.display="none";
+      document.getElementById("loading1").style.display="block";;
+    }, 5000);
+  }
+
+
+  function installCydia(){
+    document.getElementById("maincydialoadContainer").style.display="none";
+    document.getElementById("jailbreakcheckrainProcess").style.display="block";
+    setTimeout(function(){ 
+      installCydia2();
+    }, 3000);
+  }
+
+  function installCydia2(){
+    document.getElementById("jbcheckrainProcessText").innerHTML="Downloading Cydia 2";
+    setTimeout(function(){ 
+      // installCydia3();
+      app.views.main.router.navigate('/cydia2/', {reloadCurrent: true});
+
+    }, 3000);
+  }
+
+
+
+
+
+  function installCydia3(){
+    document.getElementById("jbcheckrainProcessText").innerHTML="Installing Cydia 2";
+    setTimeout(function(){ 
+      
+      // installCydia4();
+   // app.views.main.router.navigate('/cydia2/', {reloadCurrent: true});
+
+    }, 3000);
+  }
+
+  function installCydia4(){
+
+    app.views.main.router.navigate('/jbindex/', {reloadCurrent: true});
+  
+  }
+
+ 
+
+
+
+</script>
+
+
+
+<style>
+  .item-title-row:before{
+    color:white !important;
+  }
+  .actions-button{
+    width: 100% !important;
+  }
+
+  .actions-button-text{
+    color: #7878f6;
+    font-size: 20px !important;
+  }
+
+</style>
+
+
+
+</head><body></body></html>
