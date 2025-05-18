@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#2196f3">
+    <title>Checkra1n Loader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: -apple-system, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background-color: #000000;
+            padding: 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+        .logo {
+            width: 40px;
+            height: 40px;
+            margin: 5% auto 0;
+            padding: 10px;
+            display: block;
+        }
+        .title {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 500;
+            text-align: center;
+            padding: 15px;
+            margin-bottom: -25px;
+        }
+        .block-title {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 32px 16px 16px;
+        }
+        .block {
+            background-color: #292828;
+            color: #ffffff;
+            padding: 0;
+            margin: 0 0 32px;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .loading {
+            padding: 20px;
+            margin: 0;
+            display: none;
+            font-size: 14px;
+        }
+        .preloader {
+            display: inline-block;
+            vertical-align: middle;
+            width: 32px;
+            height: 32px;
+            position: relative;
+            margin-right: 2px;
+        }
+        .preloader-inner {
+            display: block;
+            width: 100%;
+            height: 100%;
+            animation: preloader-rotate 1.2s linear infinite;
+        }
+        .preloader-inner-gap {
+            position: absolute;
+            width: 2px;
+            left: 50%;
+            margin-left: -1px;
+            top: 0;
+            bottom: 0;
+            border-top: 4px solid #ffffff;
+        }
+        .preloader-inner-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .preloader-inner-half-circle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            border: 4px solid #ffffff;
+            border-bottom-color: transparent;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: preloader-half-rotate 1.2s linear infinite;
+        }
+        .preloader-inner-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .preloader-inner-right .preloader-inner-half-circle {
+            right: 0;
+            border-right-color: #ffffff;
+            border-left-color: transparent;
+        }
+        .list {
+            margin: 0;
+            display: block;
+        }
+        .list ul {
+            list-style: none;
+            padding: 0;
+            background-color: #292828;
+        }
+        .item-link {
+            display: flex;
+            align-items: center;
+            background-color: #292828;
+            color: #ffffff;
+            text-decoration: none;
+            min-height: 48px;
+            padding-left: 16px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        .item-link:hover {
+            background-color: #333333;
+        }
+        .item-media {
+            width: 35px;
+            height: 35px;
+            padding: 14px 0;
+        }
+        .item-media img {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+        }
+        .item-inner {
+            flex: 1;
+            padding: 14px 26px 14px 16px;
+        }
+        .item-title-row {
+            margin-top: 2%;
+            display: flex;
+            align-items: center;
+        }
+        .item-title {
+            font-size: 16px;
+            font-weight: 400;
+            color: #ffffff;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .version-info {
+            color: #ffffff;
+            font-size: 14px;
+            text-align: center;
+            margin: -50px 0 14px;
+            padding: 20px;
+        }
+        .download-section {
+            margin-top: 45%;
+            display: none;
+        }
+        .download-block {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 0;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .download-text {
+            font-size: 14px;
+            margin: 8px 0 0;
+        }
+        .actions-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 13000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+        }
+        .actions-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .actions {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 480px;
+            background-color: #ffffff;
+            z-index: 13499;
+            overflow: auto;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+        .actions.active {
+            transform: translateY(0);
+        }
+        .actions-button {
+            width: 100%;
+            padding: 16px;
+            font-size: 20px;
+            font-weight: 400;
+            color: #7878f6;
+            background-color: #e5e5e5;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-bottom: 1px solid #d0d0d0;
+        }
+        .actions-button.cancel {
+            background-color: #ffffff;
+            border-bottom: none;
+        }
+        .actions-button:hover {
+            background-color: #d0d0d0;
+        }
+        .actions-button.cancel:hover {
+            background-color: #f0f0f0;
+        }
+        @keyframes preloader-rotate {
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes preloader-half-rotate {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            .title {
+                font-size: 20px;
+            }
+            .item-title {
+                font-size: 14px;
+            }
+            .actions-button {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://semijbapps.com/virtual-jailbreak/secure/checkra1n/img/chekrain-icon.png" class="logo">
+        <h1 class="title">Loader</h1>
+        <div id="maincydialoadContainer">
+            <div class="block-title">Install</div>
+            <div class="block">
+                <div id="loading" class="loading">
+                    <span class="preloader">
+                        <span class="preloader-inner">
+                            <span class="preloader-inner-gap"></span>
+                            <span class="preloader-inner-left">
+                                <span class="preloader-inner-half-circle"></span>
+                            </span>
+                            <span class="preloader-inner-right">
+                                <span class="preloader-inner-half-circle"></span>
+                            </span>
+                        </span>
+                    </span>
+                    <span>Loading</span>
+                </div>
+                <div id="loading1" class="list">
+                    <ul>
+                        <li>
+                            <a href="#" class="item-link" id="cydiaLink">
+                                <div class="item-media">
+                                    <img src="https://semijbapps.com/virtual-jailbreak/secure/checkra1n/img/cydia-chekrain.png">
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">Cydia 2</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <p class="version-info">checkra1n Loader 1.0.1 (1)</p>
+        </div>
+        <div id="jailbreakcheckrainProcess" class="download-section">
+            <div class="download-block">
+                <span class="preloader">
+                    <span class="preloader-inner">
+                        <span class="preloader-inner-gap"></span>
+                        <span class="preloader-inner-left">
+                            <span class="preloader-inner-half-circle"></span>
+                        </span>
+                        <span class="preloader-inner-right">
+                            <span class="preloader-inner-half-circle"></span>
+                        </span>
+                    </span>
+                </span>
+                <p id="jbcheckrainProcessText" class="download-text">Downloading Base System</p>
+            </div>
+        </div>
+        <div class="actions-backdrop" id="actionsBackdrop">
+            <div class="actions" id="actions">
+                <div class="actions-button" id="installButton">Install Cydia 2</div>
+                <div class="actions-button cancel" id="cancelButton">Cancel</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Get DOM elements
+        const cydiaLink = document.getElementById('cydiaLink');
+        const actionsBackdrop = document.getElementById('actionsBackdrop');
+        const actions = document.getElementById('actions');
+        const installButton = document.getElementById('installButton');
+        const cancelButton = document.getElementById('cancelButton');
+        const loading = document.getElementById('loading');
+        const loading1 = document.getElementById('loading1');
+        const downloadSection = document.getElementById('jailbreakcheckrainProcess');
+
+        // Show action sheet when clicking Cydia 2
+        cydiaLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            actionsBackdrop.classList.add('active');
+            actions.classList.add('active');
+        });
+
+        // Install button: Show loading states
+        installButton.addEventListener('click', function() {
+            // Hide action sheet
+            actionsBackdrop.classList.remove('active');
+            actions.classList.remove('active');
+
+            // Show loading spinner in install section
+            loading1.style.display = 'none';
+            loading.style.display = 'block';
+
+            // Simulate loading for 2 seconds, then show download section
+            setTimeout(function() {
+                loading.style.display = 'none';
+                downloadSection.style.display = 'block';
+            }, 2000);
+        });
+
+        // Cancel button: Hide action sheet
+        cancelButton.addEventListener('click', function() {
+            actionsBackdrop.classList.remove('active');
+            actions.classList.remove('active');
+        });
+
+        // Prevent pinch-to-zoom and double-tap zoom for app-like feel
+        document.addEventListener('touchmove', function(e) {
+            if (e.scale !== 1) e.preventDefault();
+        }, { passive: false });
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>
