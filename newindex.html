@@ -199,18 +199,21 @@
         }
         .actions {
             position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 400px; /* Adjusted to make the box narrower */
+            bottom: 20px; /* Position slightly above bottom */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Center horizontally */
+            width: 90%; /* Responsive width */
+            max-width: 400px; /* Narrower width */
             background-color: #ffffff;
             z-index: 100000;
             overflow: auto;
-            transform: translateY(100%);
+            transform: translateX(-50%) translateY(100%); /* Initial off-screen position */
             transition: transform 0.3s;
-            border-radius: 14px 14px 14px 14px;
+            border-radius: 14px; /* Rounded corners */
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3); /* Slight elevation effect */
         }
         .actions.active {
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0); /* Slide up to visible position */
         }
         .actions-button {
             width: 100%;
