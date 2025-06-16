@@ -114,7 +114,7 @@
         }
         .item-inner {
             flex: 1;
-            padding: 14px 26px 14px 16px;
+            padding: 16px 26px 14px 16px;
         }
         .item-title-row {
             margin-top: 2%;
@@ -199,43 +199,48 @@
         }
         .actions {
             position: fixed;
-            bottom: 28px; /* Position slightly above bottom */
-            left: 50%; /* Center horizontally */
-            transform: translateX(-50%); /* Center horizontally */
-            width: 90%; /* Responsive width */
-            max-width: 400px; /* Narrower width */
-            background-color: #ffffff;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background-color: transparent; /* Transparent to show black body background */
             z-index: 100000;
             overflow: auto;
-            transform: translateX(-50%) translateY(100%); /* Initial off-screen position */
+            transform: translateX(-50%) translateY(100%);
             transition: transform 0.3s;
-            border-radius: 14px; /* Rounded corners */
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3); /* Slight elevation effect */
         }
         .actions.active {
-            transform: translateX(-50%) translateY(0); /* Slide up to visible position */
+            transform: translateX(-50%) translateY(0);
         }
         .actions-button {
             width: 100%;
             padding: 16px;
             font-size: 20px;
             font-weight: 400;
-            color: #7878f6;
-            background-color: #e5e5e5;
+            color: #5856d6; /* Matches the purple text color from the image */
             text-align: center;
             cursor: pointer;
             transition: background-color 0.3s;
-            border-bottom: -1px solid #d0d0d0;
+            border: none;
+            display: block; /* Ensure each button takes full width */
         }
-        .actions-button.cancel {
-            background-color: #ffffff;
-            border-bottom: none;
+        #installButton {
+            background-color: #ffffff; /* Changed to match Cancel button's white */
+            border-radius: 14px 14px 10px 10px; /* Rounded top and bottom corners */
+            margin-bottom: 10px; /* Maintains a small gap */
+            position: relative;
+            top: 0; /* No clipping */
+        }
+        #cancelButton {
+            background-color: #ffffff; /* White background for Cancel */
+            border-radius: 10px 10px 14px 14px; /* Rounded top and bottom corners */
         }
         .actions-button:hover {
-            background-color: #d0d0d0;
+            background-color: #c0c0c0; /* Slightly darker gray on hover for Install */
         }
-        .actions-button.cancel:hover {
-            background-color: #f0f0f0;
+        #cancelButton:hover {
+            background-color: #f0f0f0; /* Light gray on hover for Cancel */
         }
         @keyframes load {
             0%, 100% { opacity: 1; }
